@@ -95,6 +95,7 @@ typedef struct  {
 typedef struct {
   ServoPin_t Pin;
   volatile unsigned int ticks;
+  uint32_t lastWrite;           // last write timestamp (microseconds) for this servo
 } servo_t;
 
 class Servo
@@ -108,6 +109,7 @@ public:
   void writeMicroseconds(int value); // Write pulse width in microseconds 
   int read();                        // returns current pulse width as an angle between 0 and 180 degrees
   int readMicroseconds();            // returns current pulse width in microseconds for this servo (was read_us() in first release)
+  uint32_t lastWriteStamp();
   bool attached();                   // return true if this servo is attached, otherwise false 
 private:
    uint8_t servoIndex;               // index into the channel data for this servo

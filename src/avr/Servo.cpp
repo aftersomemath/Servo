@@ -56,6 +56,7 @@ static inline void handle_interrupts(timer16_Sequence_t timer, volatile uint16_t
   else{
     if( SERVO_INDEX(timer,Channel[timer]) < ServoCount && SERVO(timer,Channel[timer]).Pin.isActive == true )
       digitalWrite( SERVO(timer,Channel[timer]).Pin.nbr,LOW); // pulse this channel low if activated
+      SERVO(timer, Channel[timer]).lastWrite = micros();
   }
 
   Channel[timer]++;    // increment to the next channel
@@ -307,6 +308,11 @@ int Servo::readMicroseconds()
     pulsewidth  = 0;
 
   return pulsewidth;
+}
+
+uint32_t Servo::lastWriteStamp()
+{
+  return servos[this->servoIndex].lastWrite;
 }
 
 bool Servo::attached()
